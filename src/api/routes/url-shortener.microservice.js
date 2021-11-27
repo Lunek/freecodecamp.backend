@@ -1,10 +1,11 @@
 const router = require("express").Router();
 const {
   findShortUrlByOriginalOrCreateNewOne,
-  findUri
+  findUri,
 } = require("../../dal/shortener/shortUriModel");
+const { checkThatUrlIsValid } = require("../middleware/shortener.middleware");
 
-router.post("/api/shorturl", (req, res) => {
+router.post("/api/shorturl", checkThatUrlIsValid, (req, res) => {
   const { url } = req.body;
 
   findShortUrlByOriginalOrCreateNewOne(url, (err, encodedModel) => {
@@ -22,11 +23,9 @@ router.post("/api/shorturl", (req, res) => {
 router.get("/api/shorturl/:short", (req, res) => {
   findUri(req.params.short, (err, encodedModel) => {
     if (err) {
-      res.status(500).send('Could not find original URL by specified short');
+      res.status(500).send("Could not find original URL by specified short");
     } else {
-      res.send({
-        original_url: encodedModel.originalUrl,
-      });
+      res.redirect(encodedModel.originalUrl);
     }
   });
 });
