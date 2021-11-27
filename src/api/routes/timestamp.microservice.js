@@ -10,7 +10,7 @@ router.get("/:date", validateAndCastDateToMoment, (req, res) => {
 
   const response = {
     unix: parsedDate.unix(),
-    utc: parsedDate.toString(),
+    utc: parsedDate.toDate().toUTCString(),
   };
 
   res.send(response);
@@ -21,7 +21,7 @@ router.get("/", (req, res) => {
 
   const response = {
     unix: currentDate.unix(),
-    utc: currentDate.toString(),
+    utc: parsedDate.toDate().toUTCString(),
   };
 
   res.send(response);
