@@ -12,8 +12,7 @@
   "dependencies": {
     "cors": "^2.8.0",
     "dotenv": "^10.0.0",
-    "express": "^4.12.4",
-	"moment": "^2.29.1"
+    "express": "^4.12.4"
   },
   "repository": {
     "type": "git",
@@ -25,8 +24,5 @@
     "express",
     "freecodecamp"
   ],
-  "license": "MIT",
-  "devDependencies": {
-    "moment": "^2.29.1"
-  }
+  "license": "MIT"
 }
