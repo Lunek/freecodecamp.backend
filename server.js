@@ -31,6 +31,10 @@ app.get("/timestamp", function (req, res) {
   res.sendFile(__dirname + "/src/views/timestamp.html");
 });
 
+app.get("/parser", function (req, res) {
+  res.sendFile(__dirname + "/src/views/parser.html");
+});
+
 app.use("/api", timestamp);
 
 // listen for requests :)
