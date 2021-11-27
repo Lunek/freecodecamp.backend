@@ -4,15 +4,18 @@
 // init project
 const express = require("express");
 const app = express();
+const bodyParser = require('body-parser');
 require('dotenv').config({path: './environment/development.env'});
 
 const parser = require("./src/api/routes/header-parser.microservice");
 const timestamp = require("./src/api/routes/timestamp.microservice");
+const shortener = require("./src/api/routes/url-shortener.microservice")
 
 // enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
 // so that your API is remotely testable by FCC
 var cors = require("cors");
 app.use(cors({ optionsSuccessStatus: 200 })); // some legacy browsers choke on 204
+app.use(bodyParser.urlencoded({ extended: false }))
 
 // http://expressjs.com/en/starter/static-files.html
 app.use(express.static("src/static"));
@@ -36,8 +39,13 @@ app.get("/parser", function (req, res) {
   res.sendFile(__dirname + "/src/views/parser.html");
 });
 
+app.get("/shortener", function (req, res) {
+  res.sendFile(__dirname + "/src/views/shortener.html");
+});
+
 app.use("/timestamp", timestamp);
 app.use("/parser", parser);
+app.use("/shortener", shortener);
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function () {
