@@ -6,6 +6,7 @@ const express = require("express");
 const app = express();
 require('dotenv').config({path: './environment/development.env'});
 
+const parser = require("./src/api/routes/header-parser.microservice");
 const timestamp = require("./src/api/routes/timestamp.microservice");
 
 // enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
@@ -35,7 +36,8 @@ app.get("/parser", function (req, res) {
   res.sendFile(__dirname + "/src/views/parser.html");
 });
 
-app.use("/api", timestamp);
+app.use("/timestamp", timestamp);
+app.use("/parser", parser);
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function () {

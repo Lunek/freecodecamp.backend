@@ -3,7 +3,7 @@ const {
   validateAndCastDateToMoment
 } = require("../middleware/timestamp.middleware.js");
 
-router.get("/:date", validateAndCastDateToMoment, (req, res) => {
+router.get("/api/:date", validateAndCastDateToMoment, (req, res) => {
   // We can get parsed date from middleware
   const parsedDate = new Date(req.parsedDate);
 
@@ -15,7 +15,7 @@ router.get("/:date", validateAndCastDateToMoment, (req, res) => {
   res.send(response);
 });
 
-router.get("/", (req, res) => {
+router.get("/api", (req, res) => {
   const currentDate = new Date();
 
   const response = {
