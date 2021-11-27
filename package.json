@@ -1,29 +1,32 @@
 {
-	"name": "freecodecamp.backend",
-	"author": "Alexander Belakovskyi", 
-	"description": "Testing project to complete the course from freeCodeCamp",
-	"version": "0.0.1",
-	"main": "server.js",
-	"scripts": {
-		"start": "node server.js"
-	},
-	"dependencies": {
-		"cors": "^2.8.0",
-		"dotenv": "^10.0.0",
-		"express": "^4.12.4"
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/Lunek/freecodecamp.backend"
-	},
-	"keywords": [
-		"node",
-		"hyperdev",
-		"express",
-		"freecodecamp"
-	],
-	"license": "MIT",
-	"devDependencies": {
-		"moment": "^2.29.1"
-	}
+  "name": "freecodecamp.backend",
+  "author": "Alexander Belakovskyi",
+  "description": "Testing project to complete the course from freeCodeCamp",
+  "version": "0.0.1",
+  "main": "server.js",
+  "scripts": {
+    "heroku-prebuild": "export NPM_CONFIG_PRODUCTION=false; export NODE_ENV=; NPM_CONFIG_PRODUCTION=false NODE_ENV=development npm install --only=dev --dev",
+    "heroku-postbuild": "export NPM_CONFIG_PRODUCTION=true; export NODE_ENV=production;",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.0",
+    "dotenv": "^10.0.0",
+    "express": "^4.12.4",
+	"moment": "^2.29.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Lunek/freecodecamp.backend"
+  },
+  "keywords": [
+    "node",
+    "hyperdev",
+    "express",
+    "freecodecamp"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "moment": "^2.29.1"
+  }
 }
