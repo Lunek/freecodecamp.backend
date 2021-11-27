@@ -1,4 +1,4 @@
-const router = require('express').Router();
+const router = require("express").Router();
 
 router.get("/api/whoami", (req, res) => {
   const response = {

@@ -1,6 +1,6 @@
-const router = require('express').Router();
+const router = require("express").Router();
 const {
-  validateAndCastDateToMoment
+  validateAndCastDateToMoment,
 } = require("../middleware/timestamp.middleware.js");
 
 router.get("/api/:date", validateAndCastDateToMoment, (req, res) => {
