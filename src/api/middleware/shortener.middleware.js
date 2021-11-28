@@ -1,19 +1,17 @@
 const dns = require("dns");
 
 const checkThatUrlIsValid = (req, res, next) => {
-  let { url } = req.body;
+  const originalURL = req.body.url;
 
   const httpRegex = /^(http|https)(:\/\/)/;
-  if (!httpRegex.test(url)) {
-    return res.status(500).send({ error: "invalid url" });
+  if (!httpRegex.test(originalURL)) {
+    return res.json({ error: "invalid url" });
   }
-  url = url.replace(httpRegex, "");
 
-  dns.lookup(url, (err, address, number) => {
+  const urlObject = new URL(originalURL);
+  dns.lookup(urlObject.hostname, (err, address, family) => {
     if (err) {
-      return res.status(500).send({
-        error: "invalid url",
-      });
+      res.json({ error: "invalid url" });
     } else {
       next();
     }
