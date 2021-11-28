@@ -1,5 +1,9 @@
 const router = require("express").Router();
-const { createUser, getAllUsers } = require("../../dal/tracker/userModel");
+const {
+  createUser,
+  getAllUsers,
+  createExerciseByUserId,
+} = require("../../dal/tracker/userModel");
 
 router.post("/api/users", (req, res) => {
   const { username } = req.body;
@@ -22,14 +26,34 @@ router.get("/api/users", (req, res) => {
   });
 });
 
-router.post("/api/users/:id/exercises", (req, res) => {});
+router.post("/api/users/:id/exercises", (req, res) => {
+  const { description, duration, date } = req.body;
+  const userId = req.params.id;
+
+  createExerciseByUserId(userId, {
+    description,
+    duration,
+    date
+  }, (err, data) => {
+    if (err) res.status(500).send(`Unable to add user. Error ${err}`);
+    else {
+      res.send({
+        _id: data.user._id,
+        username: data.user.username,
+        date: data.date.toDateString(),
+        duration: data.duration,
+        description: data.description,
+      });
+    }
+  })
+});
 
 router.get("/api/users/:id/logs", (req, res) => {
   console.log(req.params.id); //param id
   console.log(req.query.from); //qs from
   console.log(req.query.to); //qs to
   console.log(req.query.limit); //qs limit
-  res.send({});
+  res.status(500).send({});
 });
 
 module.exports = router;
