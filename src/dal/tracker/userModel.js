@@ -16,7 +16,7 @@ const exerciseSchema = new Schema(
   {
     description: { type: String, required: true },
     duration: { type: Number, required: true },
-    date: { type: Date },
+    date: { type: Date, default: Date.now },
     user: { type: Schema.Types.ObjectId, ref: "User" },
   },
   { versionKey: false }
