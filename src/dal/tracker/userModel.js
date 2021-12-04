@@ -75,9 +75,31 @@ const getAllLogsByUserId = (userId, callback) => {
     });
 };
 
+const getAllLogsByUserIdWithFilteres = (userId, filters, callback) => {
+  userModel
+    .findById(userId)
+    .populate({
+      path: "exercises",
+      select: "-_id description duration date",
+      match: {
+        data: {
+          $gte: filters.from,
+          $lt: filters.to,
+        },
+      },
+      options: {
+        limit: filters.limit,
+      },
+    })
+    .exec((err, data) => {
+      callback(err, data);
+    });
+};
+
 module.exports = {
   createUser,
   getAllUsers,
   createExerciseByUserId,
   getAllLogsByUserId,
+  getAllLogsByUserIdWithFilteres
 };

@@ -4,7 +4,11 @@ const {
   getAllUsers,
   createExerciseByUserId,
   getAllLogsByUserId,
+  getAllLogsByUserIdWithFilteres,
 } = require("../../dal/tracker/userModel");
+const {
+  logsCallbackHandler,
+} = require("../../helpers/exercise-tracker.handlers");
 
 router.post("/api/users", (req, res) => {
   const { username } = req.body;
@@ -59,27 +63,22 @@ router.get("/api/users/:id/logs", (req, res) => {
 
   if (from && to && limit) {
     // all optional params exists
-    res.status(500).send({});
+    getAllLogsByUserIdWithFilteres(
+      userId,
+      {
+        limit: limit,
+        from: new Date(from),
+        to: new Date(to),
+      },
+      (err, data) => {
+        logsCallbackHandler(res, err, data);
+      }
+    );
   } else {
     // no optional params
-    getAllLogsByUserId(userId, (err, data) => {
-      if (err) {
-        res.status(500).send(`Unable to find logs by userId. Error ${err}`);
-      } else {
-        res.status(200).send({
-          _id: data._id,
-          username: data.username,
-          count: data.exercises.length,
-          log: data.exercises.map((exercise) => {
-            return {
-              description: exercise.description,
-              duration: exercise.duration,
-              date: exercise.date.toDateString(),
-            };
-          }),
-        });
-      }
-    });
+    getAllLogsByUserId(userId, (err, data) =>
+      logsCallbackHandler(res, err, data)
+    );
   }
 });
 
