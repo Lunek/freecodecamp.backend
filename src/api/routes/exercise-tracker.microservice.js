@@ -61,14 +61,14 @@ router.get("/api/users/:id/logs", (req, res) => {
   const userId = req.params.id;
   const { from, to, limit } = req.query; // optional params
 
-  if (from && to && limit) {
+  if ((from && to) || limit) {
     // all optional params exists
     getAllLogsByUserIdWithFilteres(
       userId,
       {
         limit: limit,
-        from: new Date(from),
-        to: new Date(to),
+        from: from ? new Date(from) : undefined,
+        to: to ? new Date(to) : undefined
       },
       (err, data) => {
         logsCallbackHandler(res, err, data);
