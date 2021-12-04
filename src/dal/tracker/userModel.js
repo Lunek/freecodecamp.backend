@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { Schema } = mongoose;
+const { Schema, model } = mongoose;
 
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
@@ -22,8 +22,8 @@ const exerciseSchema = new Schema(
   { versionKey: false }
 );
 
-let userModel = mongoose.model("User", userSchema);
-let exerciseModel = mongoose.model("Exercise", exerciseSchema);
+const exerciseModel = model("Exercise", exerciseSchema);
+const userModel = model("User", userSchema);
 
 const createUser = (username, callback) => {
   const user = new userModel({
@@ -47,10 +47,18 @@ const createExerciseByUserId = (userId, exercise, callback) => {
     },
     (err, exer) => {
       if (!err) {
-        exerciseModel
-          .findById(exer._id)
-          .populate("user")
-          .exec((err, data) => callback(err, data));
+        userModel.findOneAndUpdate(
+          { _id: userId },
+          { $push: { exercises: exer } },
+          (err, doc, res) => {
+            if (!err) {
+              exerciseModel
+                .findById(exer._id)
+                .populate("user")
+                .exec((err, data) => callback(err, data));
+            }
+          }
+        );
       } else {
         callback(err, exer);
       }
@@ -58,8 +66,18 @@ const createExerciseByUserId = (userId, exercise, callback) => {
   );
 };
 
+const getAllLogsByUserId = (userId, callback) => {
+  userModel
+    .findById(userId)
+    .populate("exercises", "-_id description duration date")
+    .exec((err, data) => {
+      callback(err, data);
+    });
+};
+
 module.exports = {
   createUser,
   getAllUsers,
   createExerciseByUserId,
+  getAllLogsByUserId,
 };
