@@ -11,6 +11,7 @@ const parser = require("./src/api/routes/header-parser.microservice");
 const timestamp = require("./src/api/routes/timestamp.microservice");
 const shortener = require("./src/api/routes/url-shortener.microservice")
 const tracker = require("./src/api/routes/exercise-tracker.microservice")
+const metadata = require("./src/api/routes/file-metadata.microservice")
 
 // enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
 // so that your API is remotely testable by FCC
@@ -48,11 +49,16 @@ app.get("/tracker", function (req, res) {
   res.sendFile(__dirname + "/src/views/exerciseTracker.html");
 });
 
+app.get("/metadata", function (req, res) {
+  res.sendFile(__dirname + "/src/views/fileMetadata.html");
+});
+
 
 app.use("/timestamp", timestamp);
 app.use("/parser", parser);
 app.use("/shortener", shortener);
 app.use("/tracker", tracker);
+app.use("/metadata", metadata);
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function () {
